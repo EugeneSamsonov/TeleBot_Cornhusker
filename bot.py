@@ -1,19 +1,15 @@
 import telebot
 import requests
-import exchange_rate_for_bot
 import speech_recognition as SRG
 # import yt_dlp as youtube_dl
 from pydub import AudioSegment
-from modules import config
+from modules import config, exchange_rate_for_bot
 from random import randint, choice
 from telebot import types
 from os import stat
 from googletrans import Translator
 
 bot = telebot.TeleBot(config.TOKEN)
-
-
-# Команды
 
 # start
 @bot.message_handler(commands=['start'])
