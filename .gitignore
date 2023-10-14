@@ -107,4 +107,4 @@ venv.bak/
 # other
 voice/
 Users lists/
-modules/config.py
+config.py
