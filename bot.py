@@ -1,9 +1,10 @@
 import telebot
 import requests
 import speech_recognition as SRG
+import config
 # import yt_dlp as youtube_dl
 from pydub import AudioSegment
-from modules import config, exchange_rate_for_bot
+from modules import exchange_rate_for_bot
 from random import randint, choice
 from telebot import types
 from os import stat
