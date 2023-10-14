@@ -103,3 +103,8 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# other
+voice/
+Users lists/
+modules/config.py
