@@ -12,6 +12,7 @@ from googletrans import Translator
 
 bot = telebot.TeleBot(config.TOKEN)
 
+
 # start
 @bot.message_handler(commands=['start'])
 def start(message):
@@ -87,7 +88,7 @@ def hello(message):
 def seabatle(message):
     markup = types.InlineKeyboardMarkup()
     markup.add(types.InlineKeyboardButton('Поиграть в морской бой',
-               url='https://goodchebureck.github.io/Sea-battle/'))
+                                          url='https://goodchebureck.github.io/Sea-battle/'))
     bot.send_message(
         message.chat.id, "Поиграйте в морской бой", reply_markup=markup)
 
@@ -127,6 +128,7 @@ def catfact(message):
 
     bot.send_message(message.chat.id, trans_word.text)
 
+
 '''# Скачивание видео с youtube
 @bot.message_handler(commands=['dowload_from_youtube'])
 def youtube_dowloader(message):
@@ -146,8 +148,6 @@ def dowload_from_youtube(message):
 
     bot.send_video(message.chat.id, video_full)
     bot.send_audio(message.chat.id, audio_full)'''
-
-
 
 
 # Создание списка пользователя
@@ -178,7 +178,7 @@ def check_list(message):
             bot.send_message(message.chat.id, "Ваш список пуст")
         else:
             for i in lines:
-                b = f'{b + str(lines.index(i)+1)} {i}\n'
+                b = f'{b + str(lines.index(i) + 1)} {i}\n'
             bot.send_message(message.chat.id, str(b))
     except:
         bot.send_message(message.chat.id, "Поймана ошибка")
@@ -193,7 +193,7 @@ def remove_th(message):
 
 def remove_rep(message):
     user_file = str(message.from_user.id) + ".txt"
-    replace_line(f"Users lists/{user_file}", int(message.text)-1, '')
+    replace_line(f"Users lists/{user_file}", int(message.text) - 1, '')
     bot.send_message(message.chat.id, f"{str(message.text)} элемент удалён")
 
 
@@ -204,10 +204,51 @@ def replace_line(file_name, line_num, text):
     out.writelines(lines)
     out.close()
 
+
+# Функция по счёту и отправке ИМТ
+@bot.message_handler(commands=['IMT'])
+def start_def_IMT(message):
+    msg = bot.send_message(message.chat.id, "Введите данные в формате: Имя Фамилия Рост Вес")
+    bot.register_next_step_handler(msg, send_IMT)
+
+
+def send_IMT(message):
+    msg = message.text.splitlines()
+    result = ''
+    for i in msg:
+        try:
+            i = i.split()
+            result += f"{i[0]} {i[1]}, {сalculation_IMT(float(i[2]), float(i[3]))}\n"
+        except ValueError:
+            result = "Вы ввели неправильные данные, нужно ввести сторого\n \"Имя Фамилию Рост Вес\""
+    bot.send_message(message.chat.id, result)
+
+
+def сalculation_IMT(height: float, weight: float):
+    height /= 100
+    IMT = weight / (height * height)
+    degree_of_pruning = 2
+    IMT = round(IMT, degree_of_pruning)
+    res = f"ИМТ = {IMT} - "
+    if IMT <= 16:
+        return res + "Выраженный дефицит массы тела"
+    elif 16 < IMT <= 18.5:
+        return res + "Недостаточная масса тела (дефцит)"
+    elif 18.5 < IMT <= 24.99:
+        return res + "Норма"
+    elif 25 < IMT <= 30:
+        return res + "Избыточная масса тела"
+    elif 30 < IMT <= 35:
+        return res + "Ожирение 1 степени"
+    elif 35 < IMT < 40:
+        return res + "Ожирение 2 степени"
+    else:
+        return res + "Ожирение 3 степени (морбидное)"
+
+
 # Камень ножницы бумага
 @bot.message_handler(commands=['knbgame'])
 def knbgame(message):
-
     murcup = types.ReplyKeyboardMarkup()
     murcup.add(types.KeyboardButton("Камень"),
                types.KeyboardButton("Ножницы"),
@@ -252,19 +293,22 @@ def KNB_game(message):
             bot.send_message(
                 message.chat.id, f"Кукуруза выбрала '{bot_choise}'")
             bot.send_message(
-                message.chat.id, f"{message.from_user.first_name} победил. А ловко ты это придумал, я сразу и не поняла, молодец")
+                message.chat.id,
+                f"{message.from_user.first_name} победил. А ловко ты это придумал, я сразу и не поняла, молодец")
 
         elif bot_choise == "бумага" and player_choise == "ножницы":
             bot.send_message(
                 message.chat.id, f"Кукуруза выбрала '{bot_choise}'")
             bot.send_message(
-                message.chat.id, f"{message.from_user.first_name} победил. А ловко ты это придумал, я сразу и не поняла, молодец")
+                message.chat.id,
+                f"{message.from_user.first_name} победил. А ловко ты это придумал, я сразу и не поняла, молодец")
 
         elif bot_choise == "камень" and player_choise == "бумага":
             bot.send_message(
                 message.chat.id, f"Кукуруза выбрала '{bot_choise}'")
             bot.send_message(
-                message.chat.id, f"{message.from_user.first_name} победил. А ловко ты это придумал, я сразу и не поняла, молодец")
+                message.chat.id,
+                f"{message.from_user.first_name} победил. А ловко ты это придумал, я сразу и не поняла, молодец")
         else:
             bot.send_message(message.chat.id, "Моя твоя не понимать :(")
     except:
@@ -279,7 +323,7 @@ def recognise(filename):
     with SRG.AudioFile(filename) as source:
         audio_text = r.listen(source)
         try:
-            text = r.recognize_google(audio_text,language=language)
+            text = r.recognize_google(audio_text, language=language)
             return text
         except:
             return "Ошибка, попробуйте снова"
@@ -310,16 +354,17 @@ def calldata_handler(call):
 """)
         bot.answer_callback_query(call.data, "")
 
+
 # Отслежка текста
 @bot.message_handler(content_types=["text"])
 def text_handler(message):
-    if message.text.lower() in ["раскажи факт о кошках", "скажи факт о кошках", "факт о кошках",]:
+    if message.text.lower() in ["раскажи факт о кошках", "скажи факт о кошках", "факт о кошках", ]:
         catfact(message)
+
 
 # Отслежка голосовых сообщений
 @bot.message_handler(content_types=['voice'])
 def voice_processing(message):
-
     src = f"voice/{message.from_user.id}.ogg"
     dst = f"voice/{message.from_user.id}_result.wav"
 
@@ -333,5 +378,6 @@ def voice_processing(message):
 
     text = recognise(dst)
     bot.reply_to(message, text)
+
 
 bot.polling(none_stop=True, interval=0)
