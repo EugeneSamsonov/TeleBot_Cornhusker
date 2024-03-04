@@ -39,6 +39,7 @@ def help(message):
 /start - Запуск/Перезапуск бота
 /help - Помощь
 /exchange_rate - Узнать курс валюты
+/IMT - узнать ИМТ (отношение массы к росту) для одного или ряда людей
 /add - Добавить какой-то элемент в список
 /remove - Удалить элемент из списка
 /check - Посмотреть список
@@ -47,7 +48,7 @@ def help(message):
 /hello - поприветствовать бота
 /seabattle - Сыграть в морской бой (Переход на сайт)
 /thebestwaifu - Отправит фото лучшей вайфу
-/catfact - Отправит факт о котиках
+/catfact - Отправит факт о котиках (пока не работает)
 ''')
 
 
@@ -206,7 +207,7 @@ def replace_line(file_name, line_num, text):
 
 
 # Функция по счёту и отправке ИМТ
-@bot.message_handler(commands=['IMT'])
+@bot.message_handler(commands=['imt'])
 def start_def_IMT(message):
     msg = bot.send_message(message.chat.id, "Введите данные в формате: Имя Фамилия Рост Вес")
     bot.register_next_step_handler(msg, send_IMT)
