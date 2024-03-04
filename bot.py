@@ -48,7 +48,7 @@ def help(message):
 /hello - поприветствовать бота
 /seabattle - Сыграть в морской бой (Переход на сайт)
 /thebestwaifu - Отправит фото лучшей вайфу
-/catfact - Отправит факт о котиках (пока не работает)
+/catfact - Отправит факт о котиках
 ''')
 
 
@@ -121,13 +121,16 @@ def random(message):
 @bot.message_handler(commands=['catfact'])
 def catfact(message):
     tr = Translator()
-    response = requests.get("https://catfact.ninja/fact")
-    r = response.json()
+    try:
+        response = requests.get("https://catfact.ninja/fact")
+        r = response.json()
 
-    text_f = r["fact"]
-    trans_word = tr.translate(text_f, dest="ru", src="en")
+        text_f = r["fact"]
+        trans_word = tr.translate(text_f, dest="ru", src="en")
 
-    bot.send_message(message.chat.id, trans_word.text)
+        bot.send_message(message.chat.id, trans_word.text)
+    except:
+        bot.send_message(message.chat.id, "Что-то пошло не так")
 
 
 '''# Скачивание видео с youtube
